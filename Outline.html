@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investing Experiment — Guidelines</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --white: #FFFFFF;
+    --surface: #FFFFFF;
+    --navy: #1B2A4A;
+    --navy-light: #2C3E6B;
+    --navy-faint: rgba(27, 42, 74, 0.04);
+    --gold: #B8923E;
+    --gold-light: #D4AD5C;
+    --gold-faint: rgba(184, 146, 62, 0.08);
+    --gold-border: rgba(184, 146, 62, 0.2);
+    --text: #2D2D2D;
+    --text-secondary: #5A5A5A;
+    --text-light: #8A8A8A;
+    --border: #E5E2DC;
+    --border-light: #EDEBE6;
+    --rule: #D4D0C8;
+    --font-display: 'Libre Baskerville', Georgia, serif;
+    --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+    --max-w: 720px;
+    --transition: 0.3s ease;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── Top Bar ──────────────────────────────────────── */
+  .topbar {
+    background: var(--navy);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-logo svg { width: 28px; height: 28px; }
+  .topbar-title {
+    font-family: var(--font-display);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 32px 56px;
+    text-align: center;
+  }
+  .hero-overline {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4.5vw, 40px);
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .hero-subtitle {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ── Main Content ────────────────────────────────── */
+  .content {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 48px 28px 80px;
+  }
+
+  /* ── Section ─────────────────────────────────────── */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-number {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 18px;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+  }
+  .section p {
+    margin-bottom: 14px;
+    color: var(--text);
+    font-weight: 400;
+  }
+  .section p:last-child { margin-bottom: 0; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border-light);
+    margin: 48px 0;
+  }
+
+  /* ── Guidelines Box ──────────────────────────────── */
+  .guidelines-box {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 32px 36px;
+    margin: 24px 0 8px;
+  }
+  .guideline-item {
+    display: flex;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-light);
+    align-items: flex-start;
+  }
+  .guideline-item:last-child { border-bottom: none; }
+  .guideline-num {
+    font-family: var(--font-display);
+    font-size: 15px;
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 24px;
+    padding-top: 1px;
+  }
+  .guideline-text {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+  .guideline-text strong { color: var(--navy); font-weight: 600; }
+  .guideline-sub {
+    margin-top: 8px;
+    padding-left: 0;
+  }
+  .guideline-sub li {
+    list-style: none;
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .guideline-sub li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* ── Callout Box ─────────────────────────────────── */
+  .callout {
+    background: var(--gold-faint);
+    border-left: 3px solid var(--gold);
+    padding: 20px 24px;
+    border-radius: 0 6px 6px 0;
+    margin: 24px 0;
+  }
+  .callout-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .callout p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  .callout-alt {
+    background: var(--navy-faint);
+    border-left: 3px solid var(--navy-light);
+  }
+
+  /* ── Steps ───────────────────────────────────────── */
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 32px;
+    align-items: flex-start;
+  }
+  .step-marker {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--white);
+    font-family: var(--font-display);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-content h3 {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--navy);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .step-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 10px;
+  }
+  .step-content p:last-child { margin-bottom: 0; }
+
+  /* ── Definition pairs ────────────────────────────── */
+  .def-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px 28px;
+    margin-bottom: 12px;
+  }
+  .def-term {
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--navy);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+  .def-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Example Portfolio ───────────────────────────── */
+  .example-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 8px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .example-table th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-light);
+    padding: 12px 16px;
+    background: var(--navy-faint);
+    border-bottom: 1px solid var(--border);
+  }
+  .example-table th:last-child { text-align: right; }
+  .example-table td {
+    padding: 11px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .example-table td:last-child { text-align: right; font-weight: 600; color: var(--navy); }
+  .example-table tbody tr:last-child td { border-bottom: none; }
+  .example-table tfoot td {
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    color: var(--navy);
+  }
+
+  .ticker {
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── ETF list ────────────────────────────────────── */
+  .etf-list {
+    list-style: none;
+    margin: 12px 0;
+  }
+  .etf-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+  .etf-list li:last-child { border-bottom: none; }
+  .etf-list .etf-name { font-weight: 600; color: var(--navy); }
+
+  /* ── Glossary ────────────────────────────────────── */
+  .glossary {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .glossary-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 14px;
+  }
+  .glossary-row:last-child { border-bottom: none; }
+  .glossary-term {
+    padding: 12px 16px;
+    font-weight: 600;
+    color: var(--navy);
+    background: var(--navy-faint);
+    border-right: 1px solid var(--border-light);
+  }
+  .glossary-def {
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  /* ── Link / CTA ──────────────────────────────────── */
+  a {
+    color: var(--navy-light);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition);
+  }
+  a:hover { color: var(--gold); }
+
+  .cta-bar {
+    text-align: center;
+    margin: 48px 0 0;
+    padding: 36px 24px;
+    background: var(--navy);
+    border-radius: 6px;
+  }
+  .cta-bar p {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    margin-bottom: 12px;
+    font-weight: 300;
+  }
+  .cta-bar a {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--white);
+    text-decoration: none;
+    padding: 12px 28px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    transition: all var(--transition);
+  }
+  .cta-bar a:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ── Footer ──────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 12px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border-light);
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+
+  /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 640px) {
+    .hero { padding: 44px 20px 40px; }
+    .content { padding: 36px 18px 60px; }
+    .guidelines-box { padding: 24px 20px; }
+    .step { gap: 14px; }
+    .step-marker { width: 34px; height: 34px; font-size: 14px; }
+    .glossary-row { grid-template-columns: 110px 1fr; }
+    .glossary-term, .glossary-def { padding: 10px 12px; font-size: 13px; }
+    .def-card { padding: 18px 20px; }
+    .topbar { padding: 12px 20px; }
+    .topbar-title { font-size: 12px; letter-spacing: 0.06em; }
+  }
+
+  /* ── Print ───────────────────────────────────────── */
+  @media print {
+    .topbar, .cta-bar { display: none; }
+    body { background: white; }
+    .hero { border: none; padding: 32px 0; }
+    .content { padding: 24px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="26" height="26" rx="4" stroke="rgba(184,146,62,0.5)" stroke-width="1.2"/>
+      <path d="M7 20 L11 13 L15.5 16 L21 8" stroke="#B8923E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="21" cy="8" r="1.8" fill="#B8923E"/>
+    </svg>
+    <span class="topbar-title">Investing Experiment</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-overline">2026 Challenge</div>
+  <h1>Investing Experiment</h1>
+  <p class="hero-subtitle">Each of us invests $100 and builds a small portfolio for the experiment. We track performance over course of 1 month. Low stakes. Real learning. Fun to Connect.</p>
+</div>
+
+<div class="content">
+
+  <!-- GUIDELINES -->
+  <div class="section">
+    <div class="section-number">I</div>
+    <h2>General Guide</h2>
+
+    <div class="guidelines-box">
+      <div class="guideline-item">
+        <div class="guideline-num">1</div>
+        <div class="guideline-text">
+          <strong>Budget:</strong> $100 per person.
+        </div>
+      </div>
+      <div class="guideline-item">
+        <div class="guideline-num">2</div>
+        <div class="guideline-text">
+          <strong>Buy at least:</strong>
+          <ul class="guideline-sub">
+            <li>1 full share of an individual stock (no partial shares — the stock must cost $100 or less per share)</li>
+            <li>1 ETF position (partial shares are fine, even a few dollars' worth)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="guideline-item">
+        <div class="guideline-num">3</div>
+        <div class="guideline-text">
+          <strong>Spend the rest however you want</strong> — more stocks (full shares each), more ETFs (partial shares okay), or a mix. You just need to have 1 full share and 1 partial/full ETF in the mix.
+        </div>
+      </div>
+      <div class="guideline-item">
+        <div class="guideline-num">4</div>
+        <div class="guideline-text">
+          <strong>Deadline to buy:</strong> Everyone makes their purchases by <strong>February 14</strong>. Send me your picks, I'lll enter them into the tracker where we will all be able to follow along.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">Not ready to invest real money?</div>
+      <p>You can still play along! Choose your picks, and we'll track them on the dashboard at the real market prices — so you can experience exactly what would have happened if you had invested.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- WHAT IS A STOCK / ETF -->
+  <div class="section">
+    <div class="section-number">II</div>
+    <h2>Things to keep in mind</h2>
+    <p>Here are the two things you're buying — and why it might be fun to have the mix.</p>
+
+    <div class="def-card">
+      <div class="def-term">Stock</div>
+      <div class="def-desc">A share of one specific company. If you buy Ford (ticker symbol: F), you own a tiny piece of Ford Motor Company. Your money goes up or down based on how that one company does. Higher risk, but higher reward potential — you're making a personal bet.</div>
+    </div>
+    <div class="def-card">
+      <div class="def-term">ETF</div>
+      <div class="def-desc">An Exchange-Traded Fund — a bundle of many stocks packaged together, like a sampler platter. For example, an S&P 500 ETF holds pieces of the 500 largest U.S. companies. Instead of betting on one company, your money is spread across hundreds. Lower risk, steadier returns.</div>
+    </div>
+
+    <div class="callout callout-alt" style="margin-top: 20px;">
+      <div class="callout-title">Why both?</div>
+      <p>Your stock pick is your gut instinct — the company you believe in wholeheartedly. Your ETF is a bit more of your safety net and includes a broader swath. Watching them side by side over a month should be fun to see.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- HOW TO PLAY -->
+  <div class="section">
+    <div class="section-number">III</div>
+    <h2>How to Play</h2>
+
+    <div class="step">
+      <div class="step-marker">1</div>
+      <div class="step-content">
+        <h3>Use Your Brokerage Account</h3>
+        <p>If you already have a brokerage account or IRA, you can buy directly from there. If you don't have one, most are free to open — just search for one that works for you. Look for one with no commissions and fractional share support for ETFs.</p>
+        <p>If you're playing along without real money, skip this step — just pick your stocks and ETFs and send them along and we'll get them added.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-marker">2</div>
+      <div class="step-content">
+        <h3>Find Your Picks</h3>
+        <p>Browse <a href="https://www.google.com/finance/" target="_blank">Google Finance</a> or <a href="https://finance.yahoo.com/" target="_blank">Yahoo Finance</a> to explore companies and ETFs.</p>
+        <p><strong>For your stock pick:</strong> Think about companies whose products you use and believe in. Look at the share price — you need to afford at least 1 full share within your budget. A cheaper stock leaves more room for ETFs; an expensive stock is a bigger bet on one company. That tradeoff is part of the strategy.</p>
+        <p><strong>For your ETF pick,</strong> here are some well-known options to explore:</p>
+        <ul class="etf-list">
+          <li><span class="etf-name">S&P 500 ETFs</span> — track the 500 largest U.S. companies (e.g., VOO, SPY, IVV)</li>
+          <li><span class="etf-name">Total Market ETFs</span> — even broader, thousands of companies (e.g., VTI, ITOT)</li>
+          <li><span class="etf-name">Tech-focused ETFs</span> — heavier on technology (e.g., QQQ, VGT)</li>
+          <li><span class="etf-name">Dividend ETFs</span> — companies that pay regular dividends (e.g., SCHD, VYM)</li>
+          <li><span class="etf-name">International ETFs</span> — companies outside the U.S. (e.g., VXUS, VT)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-marker">3</div>
+      <div class="step-content">
+        <h3>Buy &amp; Share</h3>
+        <p>Make your purchases (or choose your hypothetical picks), then share what you bought (how much toward each). Your picks will be added to the tracker so we can all follow along together.</p>
+        <p><strong>Example portfolio:</strong></p>
+        <table class="example-table">
+          <thead><tr><th>Type</th><th>Holding</th><th>Details</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr><td>Stock</td><td><span class="ticker">F</span> — Ford Motor Co.</td><td>2 shares @ $10.50</td><td>$21.00</td></tr>
+            <tr><td>ETF</td><td><span class="ticker">VOO</span> — S&P 500</td><td>Fractional share</td><td>$79.00</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="3">Total invested</td><td>$100.00</td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-marker">4</div>
+      <div class="step-content">
+        <h3>Check In</h3>
+        <p>Visit the tracker anytime to follow along. At the end of the month, we'll see how each of the picks fared overall.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- GAIN / LOSS -->
+  <div class="section">
+    <div class="section-number">IV</div>
+    <h2>How Do I Know What I Gained or Lost?</h2>
+    <p>The simplest way: <strong>what did you pay, and what is it worth now?</strong></p>
+    <p>Your brokerage account will show your current holdings and their market value. The difference between what you paid and what it's worth today is your gain or loss. The family tracker calculates this automatically.</p>
+    <p>Don't worry about expense ratios or platform fees — on $100 over one month, those costs amount to fractions of a penny. What moves the needle is whether your stock and ETF prices went up or down.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TIPS -->
+  <div class="section">
+    <div class="section-number">V</div>
+    <h2>A Few Things to Keep in Mind</h2>
+    <p><strong>You don't have to spend all $100 on one stock.</strong> A $15 stock leaves $85 for ETFs — and that diversification might outperform someone who went all-in on a single $90 stock.</p>
+    <p><strong>Steady can win.</strong> Companies that make everyday products tend to be more stable. Exciting picks are fun but volatile.</p>
+    <p><strong>Nobody knows the future.</strong> Even professional fund managers struggle to beat the market consistently. Don't stress about making the "perfect" pick — the point is to learn.</p>
+    <p><strong>The real win is learning.</strong> After a month of watching real prices move, you'll understand investing better than most people. That knowledge is worth far more than $100.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- GLOSSARY -->
+  <div class="section">
+    <div class="section-number">VI</div>
+    <h2>Quick Glossary</h2>
+
+    <div class="glossary">
+      <div class="glossary-row">
+        <div class="glossary-term">Ticker</div>
+        <div class="glossary-def">The short code for a stock or ETF. For example, AAPL = Apple, VOO = Vanguard S&P 500 ETF.</div>
+      </div>
+      <div class="glossary-row">
+        <div class="glossary-term">Share</div>
+        <div class="glossary-def">One unit of ownership in a company or ETF.</div>
+      </div>
+      <div class="glossary-row">
+        <div class="glossary-term">Fractional Share</div>
+        <div class="glossary-def">A piece of a share — like buying $12 worth of a $500 ETF. You own a small slice.</div>
+      </div>
+      <div class="glossary-row">
+        <div class="glossary-term">ETF</div>
+        <div class="glossary-def">Exchange-Traded Fund — a bundle of stocks you can buy as one thing.</div>
+      </div>
+      <div class="glossary-row">
+        <div class="glossary-term">Portfolio</div>
+        <div class="glossary-def">All of your investments together.</div>
+      </div>
+      <div class="glossary-row">
+        <div class="glossary-term">Return</div>
+        <div class="glossary-def">How much your portfolio gained or lost, usually shown as a percentage.</div>
+      </div>
+      <div class="glossary-row">
+        <div class="glossary-term">Diversification</div>
+        <div class="glossary-def">Spreading money across different investments to reduce risk.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-bar">
+    <p>Ready to follow along?</p>
+    <a href="#">View the Tracker →</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  Investing Experiment &middot; For entertainment and educational purposes &middot; Not financial advice
+</div>
+
+</body>
+</html>
