@@ -1,0 +1,45 @@
+{
+  "people": [
+    {
+      "id": "p001",
+      "name": "Sarah",
+      "stocks": [
+        {
+          "id": "s001",
+          "symbol": "AAPL",
+          "shares": 1,
+          "buyPrice": 150.25,
+          "buyDate": "2026-02-10"
+        },
+        {
+          "id": "s002",
+          "symbol": "VOO",
+          "shares": 0.15,
+          "buyPrice": 400.50,
+          "buyDate": "2026-02-10"
+        }
+      ]
+    },
+    {
+      "id": "p002",
+      "name": "Michael",
+      "stocks": [
+        {
+          "id": "s003",
+          "symbol": "TSLA",
+          "shares": 2,
+          "buyPrice": 45.00,
+          "buyDate": "2026-02-12"
+        },
+        {
+          "id": "s004",
+          "symbol": "QQQ",
+          "shares": 0.08,
+          "buyPrice": 380.00,
+          "buyDate": "2026-02-12"
+        }
+      ]
+    }
+  ],
+  "updated": null
+}

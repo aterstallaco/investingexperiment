@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investing Experiment — Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --white: #FFFFFF;
+    --surface: #FFFFFF;
+    --navy: #1B2A4A;
+    --navy-light: #2C3E6B;
+    --navy-faint: rgba(27, 42, 74, 0.04);
+    --gold: #B8923E;
+    --gold-light: #D4AD5C;
+    --gold-faint: rgba(184, 146, 62, 0.08);
+    --gold-border: rgba(184, 146, 62, 0.2);
+    --green: #2D8F5E;
+    --green-light: #E8F5EE;
+    --green-faint: rgba(45, 143, 94, 0.08);
+    --red: #C0392B;
+    --red-light: #FCEAE8;
+    --red-faint: rgba(192, 57, 43, 0.08);
+    --text: #2D2D2D;
+    --text-secondary: #5A5A5A;
+    --text-light: #8A8A8A;
+    --border: #E5E2DC;
+    --border-light: #EDEBE6;
+    --rule: #D4D0C8;
+    --silver-medal: #6B7C93;
+    --bronze-medal: #A67C52;
+    --font-display: 'Libre Baskerville', Georgia, serif;
+    --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+    --max-w: 780px;
+    --transition: 0.3s ease;
+    --radius: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── Top Bar ──────────────────────────────────────── */
+  .topbar {
+    background: var(--navy);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-logo svg { width: 28px; height: 28px; }
+  .topbar-title {
+    font-family: var(--font-display);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .topbar-nav {
+    position: absolute;
+    right: 32px;
+  }
+  .topbar-link {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color var(--transition);
+  }
+  .topbar-link:hover { color: rgba(255,255,255,0.9); }
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 32px 48px;
+    text-align: center;
+  }
+  .hero-overline {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4.5vw, 38px);
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ── Content ──────────────────────────────────────── */
+  .content {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+  }
+
+  /* ── Section Label ────────────────────────────────── */
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+
+  /* ── Leaderboard ──────────────────────────────────── */
+  .leaderboard {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+  .lb-row {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .lb-row:hover { background: var(--navy-faint); }
+  .lb-row.active { background: var(--gold-faint); outline: 1px solid var(--gold-border); }
+  .lb-rank {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    width: 28px;
+  }
+  .lb-rank.r1 { color: var(--gold); }
+  .lb-rank.r2 { color: var(--silver-medal); }
+  .lb-rank.r3 { color: var(--bronze-medal); }
+  .lb-rank.rx { color: var(--text-light); }
+  .lb-name {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--navy);
+  }
+  .lb-name .leader-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    background: var(--gold-faint);
+    border: 1px solid var(--gold-border);
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .lb-ret {
+    font-weight: 600;
+    font-size: 15px;
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  .lb-ret.pos { color: var(--green); }
+  .lb-ret.neg { color: var(--red); }
+  .lb-ret.flat { color: var(--text-light); }
+
+  /* ── Tabs ─────────────────────────────────────────── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 9px 20px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+  .tab:hover { border-color: var(--rule); color: var(--navy); }
+  .tab.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+  }
+
+  /* ── Portfolio Card ───────────────────────────────── */
+  .port-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px 32px;
+    margin-bottom: 24px;
+  }
+  .port-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .port-name {
+    font-family: var(--font-display);
+    font-size: 19px;
+    color: var(--navy);
+    font-weight: 400;
+  }
+  .port-summary {
+    display: flex;
+    gap: 24px;
+    padding: 20px 24px;
+    background: var(--navy-faint);
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .sum-col { flex: 1; }
+  .sum-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .sum-val {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+  .sum-val.pos { color: var(--green); }
+  .sum-val.neg { color: var(--red); }
+  .sum-val.flat { color: var(--text-light); }
+  .sum-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* ── Stock Table ──────────────────────────────────── */
+  .stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .stock-table thead {
+    background: var(--navy-faint);
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .stock-table th {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    text-align: left;
+    padding: 10px 12px;
+  }
+  .stock-table th.num { text-align: right; }
+  .stock-table tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background var(--transition);
+  }
+  .stock-table tbody tr:hover { background: var(--navy-faint); }
+  .stock-table tbody tr:last-child { border-bottom: none; }
+  .stock-table td {
+    padding: 14px 12px;
+    color: var(--text);
+  }
+  .stock-table td.num {
+    text-align: right;
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .stock-table td.pos { color: var(--green); font-weight: 600; }
+  .stock-table td.neg { color: var(--red); font-weight: 600; }
+  .stock-table td.flat { color: var(--text-light); }
+  .stock-sym {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 14px;
+  }
+  .stock-price-update {
+    font-size: 11px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+
+  /* ── News Feed ────────────────────────────────────── */
+  .news-feed {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px 28px;
+    margin-top: 24px;
+  }
+  .news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .news-refresh {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .news-refresh:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+  }
+  .news-list {
+    list-style: none;
+  }
+  .news-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-ticker {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    flex-shrink: 0;
+    width: 48px;
+    text-align: right;
+    padding-top: 2px;
+  }
+  .news-body { flex: 1; }
+  .news-title a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .news-title a:hover { color: var(--navy-light); text-decoration: underline; }
+  .news-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  .news-source { font-weight: 500; }
+  .news-loading, .news-empty {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 13px;
+    padding: 20px;
+  }
+
+  /* ── Status Bar ───────────────────────────────────── */
+  .status {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-light);
+  }
+  .status a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .status a:hover { text-decoration: underline; }
+
+  /* ── Footer ───────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-light);
+    padding: 40px 24px 60px;
+    border-top: 1px solid var(--border-light);
+    margin-top: 40px;
+  }
+
+  /* ── Utilities ────────────────────────────────────── */
+  .spin {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--text-light);
+    font-size: 14px;
+  }
+
+  /* ── Loading Overlay ──────────────────────────────── */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(250, 250, 247, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 1000;
+  }
+  .loading-overlay .spin {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+  .loading-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 12px 20px; }
+    .topbar-nav { position: static; margin-top: 8px; }
+    .hero { padding: 40px 24px 36px; }
+    .content { padding: 32px 20px 60px; }
+    .leaderboard { padding: 20px 20px; }
+    .lb-row { grid-template-columns: 28px 1fr auto; gap: 10px; padding: 10px 12px; }
+    .port-card { padding: 20px 20px 24px; }
+    .port-summary { flex-direction: column; gap: 16px; }
+    .stock-table { font-size: 13px; }
+    .stock-table th, .stock-table td { padding: 10px 8px; }
+    .news-feed { padding: 20px 20px 24px; }
+    .news-item { gap: 10px; }
+    .news-ticker { width: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading" class="loading-overlay">
+  <span class="spin"></span>
+  <div class="loading-text">Loading portfolio data...</div>
+</div>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="26" height="26" rx="4" stroke="rgba(184,146,62,0.5)" stroke-width="1.2"/>
+      <path d="M7 20 L11 13 L15.5 16 L21 8" stroke="#B8923E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="21" cy="8" r="1.8" fill="#B8923E"/>
+    </svg>
+    <span class="topbar-title">Investing Experiment</span>
+  </div>
+  <div class="topbar-nav">
+    <a href="https://aterstallaco.github.io/investingexperiment/Outline.html" class="topbar-link">Guidelines</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-overline">Family Challenge · 2026</div>
+  <h1>Portfolio Tracker</h1>
+  <p class="hero-subtitle">Real-time performance tracking for our $100 investing experiment</p>
+</div>
+
+<div class="content">
+  <div class="section-label">Leaderboard</div>
+  <div id="leaderboard-section" class="leaderboard"></div>
+
+  <div class="section-label">Portfolios</div>
+  <div id="tabs-section" class="tabs"></div>
+  <div id="portfolio-section"></div>
+  <div id="news-section"></div>
+
+  <div id="status-section" class="status"></div>
+</div>
+
+<div class="footer">
+  Investing Experiment &middot; For entertainment and educational purposes &middot; Not financial advice
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ═══ State ═══════════════════════════════════════════
+  let state = { people: [], updated: null };
+  let active = null;
+  let quotes = {};
+  let loading = false;
+
+  const JSON_URL = 'family-investing-data.json'; // Change this to your GitHub raw URL if needed
+
+  // ═══ Load Portfolio Data ═════════════════════════════
+  async function loadPortfolioData() {
+    try {
+      const resp = await fetch(JSON_URL);
+      if (!resp.ok) throw new Error('Failed to load portfolio data');
+      const data = await resp.json();
+      
+      if (data.people && Array.isArray(data.people)) {
+        state = data;
+        if (state.people.length > 0 && !active) {
+          active = state.people[0].id;
+        }
+        document.getElementById('loading').style.display = 'none';
+        render();
+        refreshAll();
+        refreshNews();
+      } else {
+        throw new Error('Invalid data format');
+      }
+    } catch (err) {
+      console.error('Error loading portfolio data:', err);
+      document.getElementById('loading').innerHTML = `
+        <div class="loading-text" style="color: var(--red);">
+          Failed to load portfolio data.<br>
+          Please make sure <code>family-investing-data.json</code> exists in the same directory.
+        </div>
+      `;
+    }
+  }
+
+  // ═══ Yahoo Finance API ═══════════════════════════════
+  async function fetchQuote(symbol) {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1d`;
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    try {
+      const resp = await fetch(proxyUrl);
+      if (!resp.ok) return null;
+      const json = await resp.json();
+      const result = json?.chart?.result?.[0];
+      if (!result) return null;
+      const meta = result.meta;
+      const price = meta.regularMarketPrice || meta.previousClose || 0;
+      const prevClose = meta.chartPreviousClose || meta.previousClose || price;
+      const chg = price - prevClose;
+      const chgPct = prevClose > 0 ? ((chg / prevClose) * 100) : 0;
+      quotes[symbol] = { price, chg, chgPct, ts: Date.now() };
+      return quotes[symbol];
+    } catch(e) {
+      console.error(`Quote error for ${symbol}:`, e);
+      return null;
+    }
+  }
+
+  async function refreshAll() {
+    loading = true;
+    renderStatus();
+    const syms = [...new Set(state.people.flatMap(p => p.stocks.map(s => s.symbol)))];
+    await Promise.allSettled(syms.map(s => fetchQuote(s)));
+    state.updated = Date.now();
+    loading = false;
+    render();
+  }
+
+  // ═══ Calculations ════════════════════════════════════
+  function calcStock(stock) {
+    const q = quotes[stock.symbol];
+    const cur = q ? q.price : 0;
+    const cost = stock.shares * stock.buyPrice;
+    const val = stock.shares * cur;
+    const gain = val - cost;
+    const ret = cost > 0 ? ((gain / cost) * 100) : 0;
+    return { cur, cost, val, gain, ret };
+  }
+
+  function calcPerson(person) {
+    const stocks = person.stocks.map(s => ({ ...s, ...calcStock(s) }));
+    const cost = stocks.reduce((a, s) => a + s.cost, 0);
+    const val = stocks.reduce((a, s) => a + s.val, 0);
+    const gain = val - cost;
+    const ret = cost > 0 ? ((gain / cost) * 100) : 0;
+    return { ...person, stocks, cost, val, gain, ret };
+  }
+
+  // ═══ Rendering ═══════════════════════════════════════
+  const fmt = (n) => n.toFixed(2);
+  const fmtPct = (n) => (n >= 0 ? '+' : '') + fmt(n) + '%';
+  const fmtDollar = (n) => '$' + fmt(Math.abs(n));
+  const esc = (s) => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
+
+  function render() {
+    const people = state.people.map(calcPerson);
+    people.sort((a, b) => b.ret - a.ret);
+    renderLeaderboard(people);
+    renderTabs(people);
+    renderPortfolio(people);
+    renderStatus();
+  }
+
+  function renderLeaderboard(people) {
+    const maxRet = people.length > 0 ? people[0].ret : 0;
+    document.getElementById('leaderboard-section').innerHTML = people.length === 0
+      ? '<div class="empty-state">No portfolio data yet</div>'
+      : people.map((p, i) => {
+          const isLeader = p.ret === maxRet && p.ret !== 0;
+          const rankClass = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : 'rx';
+          const retClass = p.ret > 0 ? 'pos' : p.ret < 0 ? 'neg' : 'flat';
+          return `
+            <div class="lb-row ${p.id === active ? 'active' : ''}" onclick="sel('${p.id}')">
+              <div class="lb-rank ${rankClass}">${i + 1}</div>
+              <div class="lb-name">
+                ${esc(p.name)}
+                ${isLeader ? '<span class="leader-badge">Leader</span>' : ''}
+              </div>
+              <div class="lb-ret ${retClass}">${fmtPct(p.ret)}</div>
+            </div>`;
+        }).join('');
+  }
+
+  function renderTabs(people) {
+    document.getElementById('tabs-section').innerHTML = people.map(p =>
+      `<button class="tab ${p.id === active ? 'active' : ''}" onclick="sel('${p.id}')">${esc(p.name)}</button>`
+    ).join('');
+  }
+
+  function renderPortfolio(people) {
+    const p = people.find(x => x.id === active);
+    if (!p) {
+      document.getElementById('portfolio-section').innerHTML = '<div class="empty-state">Select a portfolio to view</div>';
+      return;
+    }
+
+    const retClass = p.ret > 0 ? 'pos' : p.ret < 0 ? 'neg' : 'flat';
+    const gainClass = p.gain > 0 ? 'pos' : p.gain < 0 ? 'neg' : 'flat';
+
+    document.getElementById('portfolio-section').innerHTML = `
+      <div class="port-card">
+        <div class="port-header">
+          <div class="port-name">${esc(p.name)}'s Portfolio</div>
+        </div>
+        <div class="port-summary">
+          <div class="sum-col">
+            <div class="sum-label">Total Value</div>
+            <div class="sum-val">${fmtDollar(p.val)}</div>
+          </div>
+          <div class="sum-col">
+            <div class="sum-label">Total Gain/Loss</div>
+            <div class="sum-val ${gainClass}">${p.gain >= 0 ? '+' : ''}${fmtDollar(p.gain)}</div>
+            <div class="sum-sub">${fmtPct(p.ret)}</div>
+          </div>
+          <div class="sum-col">
+            <div class="sum-label">Initial Investment</div>
+            <div class="sum-val">${fmtDollar(p.cost)}</div>
+          </div>
+        </div>
+        ${p.stocks.length === 0 ? '<div class="empty-state">No holdings yet</div>' : `
+          <table class="stock-table">
+            <thead>
+              <tr>
+                <th>Ticker</th>
+                <th class="num">Shares</th>
+                <th class="num">Buy Price</th>
+                <th class="num">Current</th>
+                <th class="num">Value</th>
+                <th class="num">Gain/Loss</th>
+                <th class="num">Return</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${p.stocks.map(s => {
+                const retClass = s.ret > 0 ? 'pos' : s.ret < 0 ? 'neg' : 'flat';
+                const gainClass = s.gain > 0 ? 'pos' : s.gain < 0 ? 'neg' : 'flat';
+                return `
+                  <tr>
+                    <td><span class="stock-sym">${esc(s.symbol)}</span></td>
+                    <td class="num">${fmt(s.shares)}</td>
+                    <td class="num">${fmtDollar(s.buyPrice)}</td>
+                    <td class="num">${s.cur > 0 ? fmtDollar(s.cur) : '—'}</td>
+                    <td class="num">${fmtDollar(s.val)}</td>
+                    <td class="num ${gainClass}">${s.gain >= 0 ? '+' : ''}${fmtDollar(s.gain)}</td>
+                    <td class="num ${retClass}">${fmtPct(s.ret)}</td>
+                  </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        `}
+      </div>`;
+  }
+
+  function renderStatus() {
+    const sp = loading ? '<span class="spin"></span>' : '';
+    const ts = state.updated ? new Date(state.updated).toLocaleString() : '—';
+    document.getElementById('status-section').innerHTML = `
+      Last updated: ${ts} ${sp}
+      &nbsp;·&nbsp; <a href="#" onclick="event.preventDefault();refreshAll();">Refresh Prices</a>`;
+  }
+
+  // ═══ News Feed ═══════════════════════════════════════
+  let newsCache = {};
+  let newsLoading = false;
+  const NEWS_TTL = 15 * 60 * 1000;
+
+  async function fetchNews(sym) {
+    const now = Date.now();
+    if (newsCache[sym] && (now - newsCache[sym].ts) < NEWS_TTL) return newsCache[sym].items;
+    try {
+      const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(sym + ' stock')}&hl=en-US&gl=US&ceid=US:en`;
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
+      const resp = await fetch(proxyUrl);
+      if (!resp.ok) return [];
+      const text = await resp.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, 'text/xml');
+      const items = [...xml.querySelectorAll('item')].slice(0, 3).map(item => {
+        const title = item.querySelector('title')?.textContent || '';
+        const link = item.querySelector('link')?.textContent || '';
+        const pubDate = item.querySelector('pubDate')?.textContent || '';
+        const source = item.querySelector('source')?.textContent || '';
+        return { title, link, pubDate, source, symbol: sym };
+      });
+      newsCache[sym] = { items, ts: now };
+      return items;
+    } catch(e) { return newsCache[sym]?.items || []; }
+  }
+
+  async function refreshNews() {
+    const p = state.people.find(x => x.id === active);
+    if (!p || p.stocks.length === 0) { renderNews(); return; }
+    newsLoading = true; renderNews();
+    const syms = [...new Set(p.stocks.map(s => s.symbol))];
+    await Promise.allSettled(syms.map(s => fetchNews(s)));
+    newsLoading = false; renderNews();
+  }
+
+  function renderNews() {
+    const el = document.getElementById('news-section');
+    const p = state.people.find(x => x.id === active);
+    if (!p || p.stocks.length === 0) { el.innerHTML = ''; return; }
+
+    const syms = [...new Set(p.stocks.map(s => s.symbol))];
+    let allNews = [];
+    syms.forEach(sym => {
+      if (newsCache[sym]) allNews.push(...newsCache[sym].items);
+    });
+
+    allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+    allNews = allNews.slice(0, 10);
+
+    const formatTime = (dateStr) => {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      const now = new Date();
+      const diffMs = now - d;
+      const diffMins = Math.floor(diffMs / 60000);
+      if (diffMins < 60) return `${diffMins}m ago`;
+      const diffHrs = Math.floor(diffMins / 60);
+      if (diffHrs < 24) return `${diffHrs}h ago`;
+      const diffDays = Math.floor(diffHrs / 24);
+      return `${diffDays}d ago`;
+    };
+
+    el.innerHTML = `
+      <div class="news-feed">
+        <div class="news-header">
+          <div class="section-label">Market News</div>
+          <button class="news-refresh" onclick="event.preventDefault();refreshNews();">
+            ${newsLoading ? '<span class="spin"></span> Loading' : 'Refresh'}
+          </button>
+        </div>
+        ${newsLoading && allNews.length === 0 ? '<div class="news-loading">Fetching headlines…</div>' :
+          allNews.length > 0 ? `
+          <ul class="news-list">
+            ${allNews.map(n => `
+              <li class="news-item">
+                <span class="news-ticker">${esc(n.symbol)}</span>
+                <div class="news-body">
+                  <div class="news-title"><a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.title)}</a></div>
+                  <div class="news-meta">
+                    ${n.source ? `<span class="news-source">${esc(n.source)}</span>` : ''}
+                    ${n.pubDate ? `<span>${formatTime(n.pubDate)}</span>` : ''}
+                  </div>
+                </div>
+              </li>
+            `).join('')}
+          </ul>` : '<div class="news-empty">No headlines yet — click Refresh to load news</div>'}
+      </div>`;
+  }
+
+  window.refreshNews = refreshNews;
+  window.sel = id => { active = id; render(); refreshNews(); };
+
+  // ═══ Initialize ══════════════════════════════════════
+  loadPortfolioData();
+  setInterval(refreshAll, 5 * 60 * 1000);  // Refresh prices every 5 minutes
+  setInterval(refreshNews, 15 * 60 * 1000); // Refresh news every 15 minutes
+})();
+</script>
+</body>
+</html>
