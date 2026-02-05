@@ -451,6 +451,7 @@
   }
   .modal-field input {
     width: 100%;
+  
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -780,7 +781,7 @@
   function renderPort() {
     const el = document.getElementById('portfolio-section');
     const p = state.people.find(x => x.id === active);
-    if (!p) { el.innerHTML = '<div class="empty"><p>Add family members to get started</p><p class="hint">Click "+ Add Person" above</p></div>'; return; }
+    if (!p) { el.innerHTML = '<div class="empty"><p>Add members to get started</p><p class="hint">Click "+ Add Person" above</p></div>'; return; }
     const { cost, cur, gain, pct } = portCalc(p);
     el.innerHTML = `
       <div class="card">
@@ -930,7 +931,7 @@
   window.sel = id => { active = id; render(); refreshNews(); };
 
   window.modalAddPerson = () => {
-    openModal(`<h3>Add Family Member</h3><p class="modal-desc">Enter their name to create a portfolio</p>
+    openModal(`<h3>Add Member</h3><p class="modal-desc">Enter their name to create a portfolio</p>
       <form onsubmit="doAddPerson(event)">
         <div class="modal-field"><label>Name</label><input type="text" name="nm" required maxlength="30" autofocus></div>
         <div class="modal-btns"><button type="button" class="btn-ghost" onclick="closeModal()">Cancel</button><button type="submit" class="btn btn-primary">Add</button></div>
