@@ -1,0 +1,181 @@
+{
+  "people": [
+    {
+      "id": "p17703363301239851",
+      "name": "Example",
+      "stocks": [
+        {
+          "id": "s17703363720391rlq",
+          "symbol": "F",
+          "shares": 2,
+          "buyPrice": 13.64,
+          "buyDate": "2026-02-05"
+        },
+        {
+          "id": "s1770336390842uyju",
+          "symbol": "T",
+          "shares": 1,
+          "buyPrice": 27.16,
+          "buyDate": "2026-02-05"
+        },
+        {
+          "id": "s17703364405716d4o",
+          "symbol": "VTI",
+          "shares": 0.1365,
+          "buyPrice": 333.9,
+          "buyDate": "2026-02-05"
+        }
+      ]
+    },
+    {
+      "id": "p1771021981104lyne",
+      "name": "GiGi",
+      "stocks": [
+        {
+          "id": "s1771022014052lp80",
+          "symbol": "KSS",
+          "shares": 1,
+          "buyPrice": 19.85,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s1771022050519akix",
+          "symbol": "TREX",
+          "shares": 1,
+          "buyPrice": 42.8,
+          "buyDate": "2026-02-12"
+        },
+        {
+          "id": "s1771022352682ps7d",
+          "symbol": "VHT",
+          "shares": 0.129,
+          "buyPrice": 290.39,
+          "buyDate": "2026-02-13"
+        }
+      ]
+    },
+    {
+      "id": "p17710224014152sok",
+      "name": "reVISIONeer",
+      "stocks": [
+        {
+          "id": "s17710224434818v5i",
+          "symbol": "WULF",
+          "shares": 1,
+          "buyPrice": 16.26,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s1771022484747aw4u",
+          "symbol": "DEC",
+          "shares": 1,
+          "buyPrice": 13.21,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s1771022530311qytc",
+          "symbol": "PCT",
+          "shares": 1,
+          "buyPrice": 8.69,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s1771022562409p3p1",
+          "symbol": "MNTK",
+          "shares": 1,
+          "buyPrice": 1.71,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s17710226034592h3t",
+          "symbol": "GEVO",
+          "shares": 10,
+          "buyPrice": 1.86,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s1771022714606sicd",
+          "symbol": "VTI",
+          "shares": 0.1241,
+          "buyPrice": 336.65,
+          "buyDate": "2026-02-13"
+        }
+      ]
+    },
+    {
+      "id": "p1771022744108s44w",
+      "name": "Lulu",
+      "stocks": [
+        {
+          "id": "s1771022795906vwux",
+          "symbol": "OFRM",
+          "shares": 2,
+          "buyPrice": 21.92,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s177102289588841hc",
+          "symbol": "VTI",
+          "shares": 0.17,
+          "buyPrice": 336.45,
+          "buyDate": "2026-02-13"
+        }
+      ]
+    },
+    {
+      "id": "p17710229846365lrs",
+      "name": "ML",
+      "stocks": [
+        {
+          "id": "s1771023132968cl9k",
+          "symbol": "PFE",
+          "shares": 2,
+          "buyPrice": 27.58,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s1771023429199d8qo",
+          "symbol": "OWNS",
+          "shares": 2.5252,
+          "buyPrice": 17.76,
+          "buyDate": "2026-02-13"
+        }
+      ]
+    },
+    {
+      "id": "p1771023802143oxic",
+      "name": "Tangential Shiny Object",
+      "stocks": [
+        {
+          "id": "s1771023823209zw6a",
+          "symbol": "SERV",
+          "shares": 1,
+          "buyPrice": 9.56,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s177102389864171z8",
+          "symbol": "NCTKY",
+          "shares": 1,
+          "buyPrice": 15.71,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s177102394384105ck",
+          "symbol": "ALGM",
+          "shares": 1,
+          "buyPrice": 42.38,
+          "buyDate": "2026-02-13"
+        },
+        {
+          "id": "s1771045455682dce6",
+          "symbol": "ARTY",
+          "shares": 0.634,
+          "buyPrice": 51.06,
+          "buyDate": "2026-02-13"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-02-14T05:07:30.616Z"
+}
