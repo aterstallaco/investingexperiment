@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investing Experiment — Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --white: #FFFFFF;
+    --surface: #FFFFFF;
+    --navy: #1B2A4A;
+    --navy-light: #2C3E6B;
+    --navy-faint: rgba(27, 42, 74, 0.04);
+    --gold: #B8923E;
+    --gold-light: #D4AD5C;
+    --gold-faint: rgba(184, 146, 62, 0.08);
+    --gold-border: rgba(184, 146, 62, 0.2);
+    --green: #2D8F5E;
+    --green-light: #E8F5EE;
+    --green-faint: rgba(45, 143, 94, 0.08);
+    --red: #C0392B;
+    --red-light: #FCEAE8;
+    --red-faint: rgba(192, 57, 43, 0.08);
+    --text: #2D2D2D;
+    --text-secondary: #5A5A5A;
+    --text-light: #8A8A8A;
+    --border: #E5E2DC;
+    --border-light: #EDEBE6;
+    --rule: #D4D0C8;
+    --silver-medal: #6B7C93;
+    --bronze-medal: #A67C52;
+    --font-display: 'Libre Baskerville', Georgia, serif;
+    --font-body: 'Source Sans 3', 'Segoe UI', sans-serif;
+    --max-w: 780px;
+    --transition: 0.3s ease;
+    --radius: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── Top Bar ──────────────────────────────────────── */
+  .topbar {
+    background: var(--navy);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .topbar-logo svg { width: 28px; height: 28px; }
+  .topbar-title {
+    font-family: var(--font-display);
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .topbar-nav {
+    position: absolute;
+    right: 32px;
+  }
+  .topbar-link {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color var(--transition);
+  }
+  .topbar-link:hover { color: rgba(255,255,255,0.9); }
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 32px 48px;
+    text-align: center;
+  }
+  .hero-overline {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 4.5vw, 38px);
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.3;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .hero-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ── Content ──────────────────────────────────────── */
+  .content {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+  }
+
+  /* ── Section Label ────────────────────────────────── */
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+
+  /* ── API Key Banner ───────────────────────────────── */
+  .api-banner {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: var(--radius);
+    padding: 16px 24px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .api-banner strong { color: var(--navy); }
+  .api-banner code {
+    background: rgba(0,0,0,0.1);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+  .api-banner a {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* ── Leaderboard ──────────────────────────────────── */
+  .leaderboard {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 32px;
+  }
+  .lb-row {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+  .lb-row:hover { background: var(--navy-faint); }
+  .lb-row.active { background: var(--gold-faint); outline: 1px solid var(--gold-border); }
+  .lb-rank {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    width: 28px;
+  }
+  .lb-rank.r1 { color: var(--gold); }
+  .lb-rank.r2 { color: var(--silver-medal); }
+  .lb-rank.r3 { color: var(--bronze-medal); }
+  .lb-rank.rx { color: var(--text-light); }
+  .lb-name {
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--navy);
+  }
+  .lb-ret {
+    font-weight: 600;
+    font-size: 15px;
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  .lb-ret.pos { color: var(--green); }
+  .lb-ret.neg { color: var(--red); }
+  .lb-ret.flat { color: var(--text-light); }
+
+  /* ── Portfolio Card ───────────────────────────────── */
+  .port-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .port-card:hover {
+    box-shadow: 0 2px 8px rgba(27, 42, 74, 0.08);
+    border-color: var(--gold-border);
+  }
+  .port-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .port-name {
+    font-family: var(--font-display);
+    font-size: 17px;
+    color: var(--navy);
+    font-weight: 400;
+  }
+  .port-name-large {
+    font-size: 19px;
+  }
+  .port-stats {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .port-stat {
+    text-align: right;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 4px;
+  }
+  .stat-val {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+  .stat-val.pos { color: var(--green); }
+  .stat-val.neg { color: var(--red); }
+  .stat-val.flat { color: var(--text-light); }
+
+  /* ── Compact Stock List ───────────────────────────── */
+  .stock-list-compact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .stock-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: var(--navy-faint);
+    border-radius: 100px;
+    font-size: 13px;
+  }
+  .stock-pill-sym {
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .stock-pill-ret {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .stock-pill-ret.pos { color: var(--green); }
+  .stock-pill-ret.neg { color: var(--red); }
+
+  /* ── Detailed Portfolio View ──────────────────────── */
+  .detail-view {
+    display: none;
+  }
+  .detail-view.active {
+    display: block;
+  }
+  .detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    cursor: pointer;
+  }
+  .detail-back:hover {
+    text-decoration: underline;
+  }
+  .port-summary {
+    display: flex;
+    gap: 24px;
+    padding: 20px 24px;
+    background: var(--navy-faint);
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .sum-col { flex: 1; }
+  .sum-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .sum-val {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+  .sum-val.pos { color: var(--green); }
+  .sum-val.neg { color: var(--red); }
+  .sum-val.flat { color: var(--text-light); }
+  .sum-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* ── Stock Table ──────────────────────────────────── */
+  .stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .stock-table thead {
+    background: var(--navy-faint);
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .stock-table th {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-light);
+    text-align: left;
+    padding: 10px 12px;
+  }
+  .stock-table th.num { text-align: right; }
+  .stock-table tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background var(--transition);
+  }
+  .stock-table tbody tr:hover { background: var(--navy-faint); }
+  .stock-table tbody tr:last-child { border-bottom: none; }
+  .stock-table td {
+    padding: 14px 12px;
+    color: var(--text);
+  }
+  .stock-table td.num {
+    text-align: right;
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .stock-table td.pos { color: var(--green); font-weight: 600; }
+  .stock-table td.neg { color: var(--red); font-weight: 600; }
+  .stock-table td.flat { color: var(--text-light); }
+  .stock-sym {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 14px;
+  }
+
+  /* ── News Feed ────────────────────────────────────── */
+  .news-feed {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px 28px;
+    margin-top: 24px;
+  }
+  .news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .news-list {
+    list-style: none;
+  }
+  .news-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .news-item:last-child { border-bottom: none; }
+  .news-ticker {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    flex-shrink: 0;
+    width: 48px;
+    text-align: right;
+    padding-top: 2px;
+  }
+  .news-body { flex: 1; }
+  .news-title a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .news-title a:hover { color: var(--navy-light); text-decoration: underline; }
+  .news-meta {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  .news-source { font-weight: 500; }
+  .news-loading, .news-empty {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 13px;
+    padding: 20px;
+  }
+
+  /* ── Status Bar ───────────────────────────────────── */
+  .status {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-light);
+  }
+  .status a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .status a:hover { text-decoration: underline; }
+
+  /* ── Footer ───────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-light);
+    padding: 40px 24px 60px;
+    border-top: 1px solid var(--border-light);
+    margin-top: 40px;
+  }
+
+  /* ── Utilities ────────────────────────────────────── */
+  .spin {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border: 2px solid var(--border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(250, 250, 247, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 1000;
+  }
+  .loading-overlay .spin {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+  .loading-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 12px 20px; }
+    .topbar-nav { position: static; margin-top: 8px; }
+    .hero { padding: 40px 24px 36px; }
+    .content { padding: 32px 20px 60px; }
+    .leaderboard { padding: 20px 20px; }
+    .lb-row { grid-template-columns: 28px 1fr auto; gap: 10px; padding: 10px 12px; }
+    .port-card { padding: 20px 20px; }
+    .port-stats { flex-direction: column; gap: 12px; align-items: flex-end; }
+    .port-summary { flex-direction: column; gap: 16px; }
+    .stock-table { font-size: 13px; }
+    .stock-table th, .stock-table td { padding: 10px 8px; }
+    .news-feed { padding: 20px 20px 24px; }
+    .news-item { gap: 10px; }
+    .news-ticker { width: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading" class="loading-overlay">
+  <span class="spin"></span>
+  <div class="loading-text">Loading portfolio data...</div>
+</div>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="26" height="26" rx="4" stroke="rgba(184,146,62,0.5)" stroke-width="1.2"/>
+      <path d="M7 20 L11 13 L15.5 16 L21 8" stroke="#B8923E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="21" cy="8" r="1.8" fill="#B8923E"/>
+    </svg>
+    <span class="topbar-title">Investing Experiment</span>
+  </div>
+  <div class="topbar-nav">
+    <a href="https://aterstallaco.github.io/investingexperiment/Outline.html" class="topbar-link">Guidelines</a>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-overline">Investing Experiment · 2026</div>
+  <h1>Portfolio Tracker</h1>
+  <p class="hero-subtitle">Real-time performance tracking for our $100 investing experiment</p>
+</div>
+
+<div class="content">
+  <div id="api-key-banner" class="api-banner">
+    <strong>⚠️ API Key Required:</strong> This tracker uses Finnhub for live stock prices. 
+    Get a <strong>free API key</strong> at <a href="https://finnhub.io/register" target="_blank">finnhub.io/register</a>, 
+    then paste it in line 520 of this HTML file where it says <code>YOUR_API_KEY_HERE</code>
+  </div>
+
+  <!-- Main Overview -->
+  <div id="main-view">
+    <div class="section-label">Leaderboard</div>
+    <div id="leaderboard-section" class="leaderboard"></div>
+
+    <div class="section-label">All Portfolios</div>
+    <div id="portfolios-overview"></div>
+
+    <div id="news-section"></div>
+  </div>
+
+  <!-- Detail View (hidden by default) -->
+  <div id="detail-view" class="detail-view">
+    <a class="detail-back" onclick="showMain()">← Back to All Portfolios</a>
+    <div id="portfolio-detail"></div>
+    <div id="portfolio-news"></div>
+  </div>
+
+  <div id="status-section" class="status"></div>
+</div>
+
+<div class="footer">
+  Investing Experiment &middot; For entertainment and educational purposes &middot; Not financial advice
+</div>
+
+<script>(function() {
+  'use strict';
+
+  // ═══════════════════════════════════════════════════════════════
+  // ⚠️  PASTE YOUR FREE FINNHUB API KEY HERE ⚠️
+  // Get one at: https://finnhub.io/register (takes 30 seconds)
+  // ═══════════════════════════════════════════════════════════════
+  const FINNHUB_API_KEY = 'YOUR_API_KEY_HERE';
+  
+  // ═══ State & Configuration ══════════════════════════
+  let state = { people: [], updated: null };
+  let activeDetail = null; // null = main view, person.id = detail view
+  let quotes = {};
+  let loading = false;
+  let newsCache = { general: [], bySymbol: {} };
+
+  const JSON_URL = 'family-investing-data.json'; 
+
+  // ═══ Check API Key ═══════════════════════════════════
+  function checkApiKey() {
+    if (FINNHUB_API_KEY === 'YOUR_API_KEY_HERE') {
+      return false;
+    }
+    const banner = document.getElementById('api-key-banner');
+    if (banner) banner.style.display = 'none';
+    return true;
+  }
+
+  // ═══ Load Portfolio Data ═════════════════════════════
+  async function loadPortfolioData() {
+    try {
+      const resp = await fetch(JSON_URL);
+      if (!resp.ok) throw new Error('Failed to load portfolio data');
+      const data = await resp.json();
+      
+      if (data.people && Array.isArray(data.people)) {
+        state = data;
+        
+        document.getElementById('loading').style.display = 'none';
+        
+        // Show UI with purchase prices first
+        render();
+        
+        // Then fetch live prices if API key is set
+        if (checkApiKey()) {
+          await refreshAll();
+          fetchGeneralNews();
+        }
+      }
+    } catch (err) {
+      console.error('Data error:', err);
+      document.getElementById('loading').innerHTML = 
+        `<div class="loading-text" style="color: var(--red);">Error loading data: ${err.message}</div>`;
+    }
+  }
+
+  // ═══ Finnhub Price Fetching ══════════════════════════
+  async function refreshAll() {
+    if (loading || !checkApiKey()) return;
+    
+    loading = true;
+    renderStatus();
+    
+    const syms = [...new Set(state.people.flatMap(p => p.stocks.map(s => s.symbol)))];
+    
+    console.log(`Fetching prices for ${syms.length} symbols...`);
+    
+    const promises = syms.map(symbol => fetchFinnhubQuote(symbol));
+    
+    try {
+      await Promise.all(promises);
+      state.updated = Date.now();
+      console.log(`✓ Successfully fetched ${syms.length} quotes`);
+    } catch(e) {
+      console.error('Error fetching quotes:', e);
+    } finally {
+      loading = false;
+      render();
+    }
+  }
+
+  async function fetchFinnhubQuote(symbol) {
+    try {
+      const url = `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${FINNHUB_API_KEY}`;
+      
+      const resp = await fetch(url);
+      if (!resp.ok) {
+        console.warn(`HTTP ${resp.status} for ${symbol} - may not be available on Finnhub`);
+        return;
+      }
+      
+      const data = await resp.json();
+      
+      if (data.c && data.c > 0) {
+        const currentPrice = data.c;
+        const prevClose = data.pc || currentPrice;
+        const change = currentPrice - prevClose;
+        const changePct = prevClose > 0 ? (change / prevClose) * 100 : 0;
+        
+        quotes[symbol] = {
+          price: currentPrice,
+          chg: change,
+          chgPct: changePct,
+          ts: Date.now()
+        };
+      } else {
+        console.warn(`No price data for ${symbol} - ticker may not exist on Finnhub`);
+      }
+    } catch(e) {
+      console.error(`Failed to fetch ${symbol}:`, e.message);
+    }
+  }
+
+  // ═══ News Fetching ═══════════════════════════════════
+  async function fetchGeneralNews() {
+    if (!checkApiKey()) return;
+    
+    try {
+      const url = `https://finnhub.io/api/v1/news?category=general&token=${FINNHUB_API_KEY}`;
+      const resp = await fetch(url);
+      if (!resp.ok) return;
+      
+      const data = await resp.json();
+      newsCache.general = data.slice(0, 5); // Top 5 stories
+      
+      if (activeDetail === null) {
+        renderGeneralNews();
+      }
+    } catch(e) {
+      console.error('Failed to fetch news:', e);
+    }
+  }
+
+  async function fetchSymbolNews(symbols) {
+    if (!checkApiKey()) return;
+    
+    try {
+      // Get news for the first symbol in their portfolio
+      const symbol = symbols[0];
+      if (newsCache.bySymbol[symbol]) {
+        renderSymbolNews(newsCache.bySymbol[symbol]);
+        return;
+      }
+      
+      const url = `https://finnhub.io/api/v1/company-news?symbol=${symbol}&from=${getPastDate(7)}&to=${getTodayDate()}&token=${FINNHUB_API_KEY}`;
+      const resp = await fetch(url);
+      if (!resp.ok) return;
+      
+      const data = await resp.json();
+      newsCache.bySymbol[symbol] = data.slice(0, 5);
+      renderSymbolNews(data.slice(0, 5));
+    } catch(e) {
+      console.error('Failed to fetch symbol news:', e);
+    }
+  }
+
+  function getPastDate(daysAgo) {
+    const d = new Date();
+    d.setDate(d.getDate() - daysAgo);
+    return d.toISOString().split('T')[0];
+  }
+
+  function getTodayDate() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  // ═══ Calculations ════════════════════════════════════
+  function calcStock(stock) {
+    const q = quotes[stock.symbol];
+    const cur = q ? q.price : 0;
+    const buyPrice = parseFloat(stock.buyPrice) || 0;
+    const cost = stock.shares * buyPrice;
+    const val = stock.shares * cur;
+    const gain = val - cost;
+    const ret = cost > 0 ? ((gain / cost) * 100) : 0;
+    return { cur, cost, val, gain, ret };
+  }
+
+  function calcPerson(person) {
+    const stocks = person.stocks.map(s => ({ ...s, ...calcStock(s) }));
+    const cost = stocks.reduce((a, s) => a + s.cost, 0);
+    const val = stocks.reduce((a, s) => a + s.val, 0);
+    const gain = val - cost;
+    const ret = cost > 0 ? ((gain / cost) * 100) : 0;
+    return { ...person, stocks, cost, val, gain, ret };
+  }
+
+  // ═══ UI Rendering ════════════════════════════════════
+  const fmt = (n) => (typeof n === 'number' ? n.toFixed(2) : '0.00');
+  const fmtPct = (n) => (n >= 0 ? '+' : '') + fmt(n) + '%';
+  const fmtDollar = (n) => '$' + fmt(Math.abs(n));
+  const esc = (s) => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
+
+  function render() {
+    const people = state.people.map(calcPerson);
+    people.sort((a, b) => b.ret - a.ret);
+    
+    renderLeaderboard(people);
+    
+    if (activeDetail === null) {
+      renderAllPortfolios(people);
+      renderGeneralNews();
+    } else {
+      renderDetailView(people);
+    }
+    
+    renderStatus();
+  }
+
+  function renderLeaderboard(people) {
+    const section = document.getElementById('leaderboard-section');
+    if (!section) return;
+    section.innerHTML = people.map((p, i) => {
+      const rankClass = i === 0 ? 'r1' : i === 1 ? 'r2' : i === 2 ? 'r3' : 'rx';
+      const retClass = p.ret > 0 ? 'pos' : p.ret < 0 ? 'neg' : 'flat';
+      return `
+        <div class="lb-row" onclick="showDetail('${p.id}')">
+          <div class="lb-rank ${rankClass}">${i + 1}</div>
+          <div class="lb-name">${esc(p.name)}</div>
+          <div class="lb-ret ${retClass}">${fmtPct(p.ret)}</div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderAllPortfolios(people) {
+    const section = document.getElementById('portfolios-overview');
+    if (!section) return;
+    
+    section.innerHTML = people.map(p => {
+      const gainClass = p.gain > 0 ? 'pos' : p.gain < 0 ? 'neg' : 'flat';
+      return `
+        <div class="port-card" onclick="showDetail('${p.id}')">
+          <div class="port-header">
+            <div class="port-name">${esc(p.name)}'s Portfolio</div>
+            <div class="port-stats">
+              <div class="port-stat">
+                <div class="stat-label">Value</div>
+                <div class="stat-val">${fmtDollar(p.val)}</div>
+              </div>
+              <div class="port-stat">
+                <div class="stat-label">Return</div>
+                <div class="stat-val ${gainClass}">${fmtPct(p.ret)}</div>
+              </div>
+            </div>
+          </div>
+          <div class="stock-list-compact">
+            ${p.stocks.map(s => {
+              const retClass = s.ret > 0 ? 'pos' : s.ret < 0 ? 'neg' : 'flat';
+              return `<div class="stock-pill">
+                <span class="stock-pill-sym">${esc(s.symbol)}</span>
+                <span class="stock-pill-ret ${retClass}">${fmtPct(s.ret)}</span>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderDetailView(people) {
+    const p = people.find(x => x.id === activeDetail);
+    if (!p) return;
+
+    const gainClass = p.gain > 0 ? 'pos' : p.gain < 0 ? 'neg' : 'flat';
+    const section = document.getElementById('portfolio-detail');
+
+    section.innerHTML = `
+      <div class="port-card" style="cursor: default;">
+        <div class="port-name port-name-large">${esc(p.name)}'s Portfolio</div>
+        <div class="port-summary">
+          <div class="sum-col"><div class="sum-label">Value</div><div class="sum-val">${fmtDollar(p.val)}</div></div>
+          <div class="sum-col">
+            <div class="sum-label">Gain</div>
+            <div class="sum-val ${gainClass}">${p.gain >= 0 ? '+' : ''}${fmtDollar(p.gain)}</div>
+            <div class="sum-sub">${fmtPct(p.ret)}</div>
+          </div>
+          <div class="sum-col"><div class="sum-label">Cost</div><div class="sum-val">${fmtDollar(p.cost)}</div></div>
+        </div>
+        <table class="stock-table">
+          <thead><tr><th>Ticker</th><th class="num">Shares</th><th class="num">Current</th><th class="num">Return</th></tr></thead>
+          <tbody>
+            ${p.stocks.map(s => {
+              const showLoading = s.cur === 0 && loading;
+              const displayPrice = s.cur > 0 ? fmtDollar(s.cur) : (showLoading ? '<span class="spin"></span>' : fmtDollar(parseFloat(s.buyPrice)));
+              return `
+              <tr>
+                <td><span class="stock-sym">${esc(s.symbol)}</span></td>
+                <td class="num">${s.shares}</td>
+                <td class="num">${displayPrice}</td>
+                <td class="num ${s.ret > 0 ? 'pos' : 'neg'}">${fmtPct(s.ret)}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+    
+    // Fetch news for their stocks
+    const symbols = p.stocks.map(s => s.symbol);
+    fetchSymbolNews(symbols);
+  }
+
+  function renderGeneralNews() {
+    const section = document.getElementById('news-section');
+    if (!section) return;
+    
+    if (newsCache.general.length === 0) {
+      section.innerHTML = `
+        <div class="news-feed">
+          <div class="news-header">
+            <div class="section-label" style="margin: 0;">Market News</div>
+          </div>
+          <div class="news-loading">Loading news...</div>
+        </div>`;
+      return;
+    }
+    
+    section.innerHTML = `
+      <div class="news-feed">
+        <div class="news-header">
+          <div class="section-label" style="margin: 0;">Market News</div>
+        </div>
+        <ul class="news-list">
+          ${newsCache.general.map(item => `
+            <li class="news-item">
+              <div class="news-body">
+                <div class="news-title"><a href="${item.url}" target="_blank">${esc(item.headline)}</a></div>
+                <div class="news-meta">
+                  <span class="news-source">${esc(item.source)}</span>
+                  <span>${new Date(item.datetime * 1000).toLocaleDateString()}</span>
+                </div>
+              </div>
+            </li>
+          `).join('')}
+        </ul>
+      </div>`;
+  }
+
+  function renderSymbolNews(newsItems) {
+    const section = document.getElementById('portfolio-news');
+    if (!section) return;
+    
+    if (newsItems.length === 0) {
+      section.innerHTML = `
+        <div class="news-feed">
+          <div class="news-header">
+            <div class="section-label" style="margin: 0;">Related News</div>
+          </div>
+          <div class="news-empty">No recent news found</div>
+        </div>`;
+      return;
+    }
+    
+    section.innerHTML = `
+      <div class="news-feed">
+        <div class="news-header">
+          <div class="section-label" style="margin: 0;">Related News</div>
+        </div>
+        <ul class="news-list">
+          ${newsItems.map(item => `
+            <li class="news-item">
+              <div class="news-body">
+                <div class="news-title"><a href="${item.url}" target="_blank">${esc(item.headline)}</a></div>
+                <div class="news-meta">
+                  <span class="news-source">${esc(item.source)}</span>
+                  <span>${new Date(item.datetime * 1000).toLocaleDateString()}</span>
+                </div>
+              </div>
+            </li>
+          `).join('')}
+        </ul>
+      </div>`;
+  }
+
+  function renderStatus() {
+    const el = document.getElementById('status-section');
+    if (!el) return;
+    
+    if (!checkApiKey()) {
+      el.innerHTML = `<span style="color: var(--red);">⚠️ Add API key to see live prices</span>`;
+    } else if (loading) {
+      el.innerHTML = `Fetching live prices... <span class="spin"></span>`;
+    } else {
+      const ts = state.updated ? new Date(state.updated).toLocaleTimeString() : 'Not yet updated';
+      el.innerHTML = `Prices last updated: ${ts} · <a href="#" onclick="event.preventDefault();refreshAll();">Refresh now</a>`;
+    }
+  }
+
+  // ═══ Navigation ══════════════════════════════════════
+  function showMain() {
+    activeDetail = null;
+    document.getElementById('main-view').style.display = 'block';
+    document.getElementById('detail-view').classList.remove('active');
+    render();
+  }
+
+  function showDetail(personId) {
+    activeDetail = personId;
+    document.getElementById('main-view').style.display = 'none';
+    document.getElementById('detail-view').classList.add('active');
+    render();
+  }
+
+  window.showMain = showMain;
+  window.showDetail = showDetail;
+  window.refreshAll = refreshAll;
+
+  // Initialize
+  loadPortfolioData();
+})();
+</script>
+</body>
+</html>
