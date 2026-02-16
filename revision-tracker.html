@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>reVISION Stock Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF9;
+    --white: #FFFFFF;
+    --obsidian: #0A0F16;
+    --obsidian-light: #1a2332;
+    --obsidian-faint: rgba(10, 15, 22, 0.04);
+    --teal: #0891B2;
+    --teal-light: #0ea5c9;
+    --teal-faint: rgba(8, 145, 178, 0.08);
+    --teal-border: rgba(8, 145, 178, 0.2);
+    --gold: #B8923E;
+    --gold-faint: rgba(184, 146, 62, 0.08);
+    --gold-border: rgba(184, 146, 62, 0.2);
+    --platinum: #E5E4E2;
+    --text: #2D2D2D;
+    --text-secondary: #5A5A5A;
+    --text-light: #8A8A8A;
+    --border: #E5E2DC;
+    --border-light: #EDEBE6;
+    --risk-low: #22c55e;
+    --risk-medium: #eab308;
+    --risk-high: #ef4444;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Montserrat', 'Segoe UI', sans-serif;
+    --transition: 0.3s ease;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* Top Bar */
+  .topbar {
+    background: var(--obsidian);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .topbar-title {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+  }
+  .topbar-title .re {
+    color: var(--platinum);
+  }
+  .topbar-title .vision {
+    color: var(--teal);
+  }
+  .topbar-subtitle {
+    font-family: var(--font-body);
+    color: var(--platinum);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-left: 8px;
+    padding-left: 12px;
+    border-left: 1px solid rgba(229, 228, 226, 0.2);
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 56px 32px 48px;
+    text-align: center;
+  }
+  .hero-overline {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4.5vw, 42px);
+    font-weight: 400;
+    color: var(--obsidian);
+    line-height: 1.3;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* Content */
+  .content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 48px 28px 80px;
+  }
+
+  /* Stats Bar */
+  .stats-bar {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 24px;
+    text-align: center;
+  }
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 500;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-light);
+  }
+
+  /* Filters */
+  .filters-bar {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+  }
+  .filter-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-item label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .filter-item select,
+  .filter-item input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: var(--font-body);
+    outline: none;
+    transition: all var(--transition);
+  }
+  .filter-item select:hover,
+  .filter-item input:hover {
+    border-color: var(--teal-border);
+  }
+  .filter-item select:focus,
+  .filter-item input:focus {
+    border-color: var(--teal);
+  }
+  .filter-item input::placeholder {
+    color: var(--text-light);
+  }
+
+  /* Section Headers */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--obsidian);
+    letter-spacing: 0.02em;
+  }
+  .section-badge {
+    font-size: 10px;
+    padding: 4px 10px;
+    background: var(--teal-faint);
+    color: var(--teal);
+    border-radius: 20px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .section-note {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-left: auto;
+    font-style: italic;
+  }
+
+  /* Companies Grid */
+  .companies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  /* Company Card */
+  .company-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+  }
+  .company-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(10, 15, 22, 0.08);
+    border-color: var(--teal-border);
+  }
+  .company-card.expanded {
+    grid-column: 1 / -1;
+  }
+
+  /* Risk Badge */
+  .risk-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .risk-low {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--risk-low);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
+  .risk-medium {
+    background: rgba(234, 179, 8, 0.1);
+    color: var(--risk-medium);
+    border: 1px solid rgba(234, 179, 8, 0.2);
+  }
+  .risk-high {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--risk-high);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  /* Company Info */
+  .ticker {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--teal);
+    margin-bottom: 2px;
+    letter-spacing: 0.02em;
+  }
+  .company-name {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  /* reVISION Story Box */
+  .revision-story {
+    background: linear-gradient(135deg, var(--teal-faint) 0%, rgba(184, 146, 62, 0.04) 100%);
+    border: 1px solid var(--teal-border);
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .story-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .story-transformation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .discarded {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--text-secondary);
+    text-decoration: line-through;
+    text-decoration-color: var(--risk-high);
+    opacity: 0.7;
+  }
+  .arrow {
+    color: var(--teal);
+    font-size: 1.1rem;
+    font-weight: 300;
+  }
+  .revisioned {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--teal);
+  }
+
+  /* Price Section */
+  .price-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .current-price {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--obsidian);
+  }
+  .price-change {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .price-up {
+    background: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
+  .price-down {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+  .price-loading {
+    color: var(--text-light);
+    font-style: italic;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+  }
+
+  /* Catalyst */
+  .catalyst {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Expanded Content */
+  .expanded-content {
+    display: none;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-light);
+  }
+  .company-card.expanded .expanded-content {
+    display: block;
+  }
+
+  .detail-section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .news-section {
+    margin-top: 16px;
+  }
+  .news-item {
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    transition: all var(--transition);
+  }
+  .news-item:hover {
+    background: var(--white);
+    border-color: var(--teal-border);
+  }
+  .news-item a {
+    color: var(--obsidian-light);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+  }
+  .news-item a:hover {
+    color: var(--teal);
+    text-decoration: underline;
+  }
+  .news-source {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  /* Foreign Card Styling */
+  .foreign-card {
+    opacity: 0.85;
+  }
+  .foreign-card .price-section {
+    background: var(--obsidian-faint);
+  }
+  .exchange-badge {
+    font-size: 10px;
+    color: var(--text-light);
+    font-weight: 500;
+    margin-left: 8px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 11px;
+    color: var(--text-light);
+    border-top: 1px solid var(--border-light);
+    line-height: 1.8;
+  }
+  .footer a {
+    color: var(--teal);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-light);
+  }
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--border);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .companies-grid {
+      grid-template-columns: 1fr;
+    }
+    .filters {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .filter-item {
+      width: 100%;
+    }
+    .filter-item select,
+    .filter-item input {
+      width: 100%;
+    }
+    .topbar {
+      padding: 12px 20px;
+      flex-wrap: wrap;
+    }
+    .topbar-subtitle {
+      display: none;
+    }
+    .hero {
+      padding: 40px 20px 36px;
+    }
+    .content {
+      padding: 32px 16px 60px;
+    }
+    .story-transformation {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .section-header {
+      flex-wrap: wrap;
+    }
+    .section-note {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 8px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="https://www.revisionance.com" class="topbar-logo">
+    <span class="topbar-title"><span class="re">re</span><span class="vision">VISION</span></span>
+  </a>
+  <span class="topbar-subtitle">Stock Tracker</span>
+</div>
+
+<div class="hero">
+  <div class="hero-overline">Investment Research</div>
+  <h1>reVISION Companies</h1>
+  <p class="hero-subtitle">"When you change the way you see things, the things you see change."</p>
+</div>
+
+<div class="content">
+  
+  <div class="stats-bar">
+    <div>
+      <div class="stat-value" id="totalCompanies">--</div>
+      <div class="stat-label">Companies</div>
+    </div>
+    <div>
+      <div class="stat-value" id="usCompanies">--</div>
+      <div class="stat-label">US Tradeable</div>
+    </div>
+    <div>
+      <div class="stat-value" id="avgChange">--</div>
+      <div class="stat-label">Avg Change</div>
+    </div>
+    <div>
+      <div class="stat-value" id="lowRiskCount">--</div>
+      <div class="stat-label">Low Risk</div>
+    </div>
+  </div>
+
+  <div class="filters-bar">
+    <div class="filters">
+      <div class="filter-item">
+        <label for="riskFilter">Risk:</label>
+        <select id="riskFilter">
+          <option value="all">All Levels</option>
+          <option value="Low">🟢 Low</option>
+          <option value="Medium">🟡 Medium</option>
+          <option value="High">🔴 High</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="searchFilter">Search:</label>
+        <input type="text" id="searchFilter" placeholder="Company or ticker...">
+      </div>
+      <div class="filter-item">
+        <label for="sortFilter">Sort:</label>
+        <select id="sortFilter">
+          <option value="ticker">Ticker</option>
+          <option value="risk">Risk Level</option>
+          <option value="name">Company Name</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- US Companies Section -->
+  <div class="section-header">
+    <h2 class="section-title">US Tradeable</h2>
+    <span class="section-badge">Live Prices</span>
+  </div>
+  <div id="usGrid" class="companies-grid"></div>
+
+  <!-- Foreign/OTC Section -->
+  <div class="section-header" style="margin-top: 48px;">
+    <h2 class="section-title">International / OTC</h2>
+    <span class="section-note">Prices not available — included for tracking</span>
+  </div>
+  <div id="foreignGrid" class="companies-grid"></div>
+
+</div>
+
+<div class="footer">
+  Last updated: <span id="lastUpdated">--</span> · 
+  <a onclick="fetchAllPrices()">Refresh prices</a><br>
+  reVISION Stock Tracker · For research and educational purposes · Not financial advice<br>
+  <a href="https://www.revisionance.com" style="opacity: 0.7;">revisionance.com</a>
+</div>
+
+<script>
+// ============================================
+// CONFIGURATION - Add your Finnhub API key here
+// ============================================
+const FINNHUB_API_KEY = 'YOUR_API_KEY_HERE';
+
+// ============================================
+// COMPANY DATA
+// ============================================
+const usCompanies = [
+  {ticker: "WULF", name: "TeraWulf", discarded: "Stranded/Waste Energy", revisioned: "Zero-Carbon Bitcoin Mining", risk: "High", catalyst: "Mining expansion in Q1 2026"},
+  {ticker: "DEC", name: "Diversified Energy", discarded: "Orphaned Gas Wells", revisioned: "Stabilized Energy Flow", risk: "Medium", catalyst: "Dividend yield leader; Feb earnings"},
+  {ticker: "TREX", name: "Trex Company", discarded: "Plastic Bags & Wood Scrap", revisioned: "Luxury Outdoor Living", risk: "Low", catalyst: "Market leader; peak building season"},
+  {ticker: "ORGN", name: "Origin Materials", discarded: "Wood Waste & Cardboard", revisioned: "Carbon-Negative Materials", risk: "High", catalyst: "Origin 2 plant progress updates"},
+  {ticker: "GEVO", name: "Gevo Inc", discarded: "Agricultural Residue", revisioned: "Sustainable Aviation Fuel", risk: "High", catalyst: "Awaiting DOE loan finalization"},
+  {ticker: "LI", name: "Li-Cycle Holdings", discarded: "Dead EV Batteries", revisioned: "Critical Battery Minerals", risk: "High", catalyst: "Rochester Hub construction milestones"},
+  {ticker: "ABAT", name: "American Battery Technology", discarded: "Electronics Scrap", revisioned: "Urban Battery Metals", risk: "High", catalyst: "Nevada facility ramping production"},
+  {ticker: "DAR", name: "Darling Ingredients", discarded: "Animal Fat & Cooking Oil", revisioned: "Sustainable Aviation Fuel", risk: "Low", catalyst: "Feb 11: Major Earnings Report"},
+  {ticker: "MNTK", name: "Montauk Renewables", discarded: "Landfill Methane", revisioned: "Renewable Natural Gas", risk: "Medium", catalyst: "Trading near 2-year lows (Value play)"},
+  {ticker: "LNZA", name: "LanzaTech", discarded: "Industrial Smoke (CO₂)", revisioned: "Recycled Carbon Fuel & Yarn", risk: "Medium", catalyst: "Licensing model scaling globally"},
+  {ticker: "PCT", name: "PureCycle Technologies", discarded: "Dirty #5 Plastic", revisioned: "Ultra-Pure Virgin Resin", risk: "High", catalyst: "Augusta plant operational ramp-up"},
+  {ticker: "LODE", name: "Comstock Inc", discarded: "Old Solar Panels", revisioned: "Recycled Silver & Minerals", risk: "High", catalyst: "Nevada recycling facility launch"},
+  {ticker: "VTNR", name: "Vertex Energy", discarded: "Used Motor Oil", revisioned: "Re-refined Base Oils", risk: "Medium", catalyst: "Refinery transition completing Q1"},
+  {ticker: "OKLO", name: "Oklo Inc", discarded: "Nuclear Waste", revisioned: "100-Year Clean Battery", risk: "High", catalyst: "Turning radioactive liability into fuel"},
+  {ticker: "XYL", name: "Xylem Inc", discarded: "Sewage & Wastewater", revisioned: "New Water Supply", risk: "Low", catalyst: "Wastewater as drought-proof reservoir"},
+  {ticker: "NVRI", name: "Enviri Corp", discarded: "Steel Slag", revisioned: "Road Materials & Abrasives", risk: "Medium", catalyst: "Industrial byproduct valorization"},
+  {ticker: "IRM", name: "Iron Mountain", discarded: "Abandoned Limestone Mine", revisioned: "Underground Data Center", risk: "Low", catalyst: "Natural cooling + AI demand surge"},
+  {ticker: "AQMS", name: "Aqua Metals", discarded: "Lead-Acid Batteries", revisioned: "Clean Metal Recovery", risk: "High", catalyst: "AquaRefining tech partnerships"},
+  {ticker: "LOOP", name: "Loop Industries", discarded: "Waste PET Plastic", revisioned: "Infinite Virgin-Quality Resin", risk: "High", catalyst: "Nike anchor customer; India plant"},
+  {ticker: "QRHC", name: "Quest Resource Holding", discarded: "Corporate Waste Streams", revisioned: "Managed Value Recovery", risk: "Medium", catalyst: "Fortune 1000 waste-to-value"},
+  {ticker: "NNE", name: "NANO Nuclear Energy", discarded: "Nuclear Waste", revisioned: "Portable Micro-Reactors", risk: "High", catalyst: "Remote/off-grid power solutions"},
+  {ticker: "PLD", name: "Prologis", discarded: "Dead Malls & Retail", revisioned: "Fulfillment & Logistics Hubs", risk: "Low", catalyst: "Amazon Randall Park conversion"},
+  {ticker: "SRG", name: "Seritage Growth Properties", discarded: "Dead Sears/Kmart Stores", revisioned: "Living Neighborhoods", risk: "High", catalyst: "In liquidation — reVISION story only"}
+];
+
+const foreignCompanies = [
+  {ticker: "TMRAY", name: "Tomra Systems", discarded: "Mixed Household Trash", revisioned: "AI-Sorted Raw Materials", risk: "Low", catalyst: "European leader; steady growth", exchange: "Norway (ADR)"},
+  {ticker: "SEOAY", name: "Stora Enso", discarded: "Wood Pulp Waste (Lignin)", revisioned: "EV Battery Anodes", risk: "Medium", catalyst: "Lignin-based battery materials", exchange: "Finland (ADR)"},
+  {ticker: "SOLVY", name: "Solvay", discarded: "Rice Husk Ash", revisioned: "Green Silica for Tires", risk: "Low", catalyst: "Sustainable tire materials", exchange: "Belgium (ADR)"},
+  {ticker: "GDST", name: "Goldstone Technologies", discarded: "Fruit & Nut Husks", revisioned: "High-End Molded Packaging", risk: "High", catalyst: "Molded fiber packaging growth", exchange: "US Micro-cap"},
+  {ticker: "DNMR", name: "Danimer Scientific", discarded: "Petroleum Dependence", revisioned: "Plant-Oil Bioplastics", risk: "High", catalyst: "Delisted to OTCQX; still operating", exchange: "OTCQX"},
+  {ticker: "CAMBI.OL", name: "Cambi", discarded: "Sewage Sludge", revisioned: "Biogas & Fertilizer", risk: "Medium", catalyst: "Thermal hydrolysis technology", exchange: "Oslo"},
+  {ticker: "ACO.X", name: "ATCO / Ashcor", discarded: "Coal Fly Ash", revisioned: "Sustainable Cement", risk: "Medium", catalyst: "Fly ash concrete applications", exchange: "Canada"},
+  {ticker: "CXL.AX", name: "Calix Limited", discarded: "Kiln Emissions", revisioned: "Water Purifiers & CO₂ Capture", risk: "High", catalyst: "Carbon capture technology", exchange: "Australia"}
+];
+
+// Price cache
+const priceCache = {};
+let expandedCard = null;
+
+// ============================================
+// INITIALIZE
+// ============================================
+function initialize() {
+  renderCompanies();
+  updateStats();
+  
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+  
+  // Event listeners
+  document.getElementById('riskFilter').addEventListener('change', filterCompanies);
+  document.getElementById('searchFilter').addEventListener('input', filterCompanies);
+  document.getElementById('sortFilter').addEventListener('change', filterCompanies);
+  
+  // Fetch prices after render
+  if (FINNHUB_API_KEY !== 'YOUR_API_KEY_HERE') {
+    setTimeout(() => fetchAllPrices(), 100);
+  } else {
+    document.querySelectorAll('.price-loading').forEach(el => {
+      el.textContent = 'Add API key';
+      el.style.fontSize = '0.75rem';
+    });
+  }
+}
+
+// ============================================
+// RENDER COMPANIES
+// ============================================
+function renderCompanies() {
+  const usGrid = document.getElementById('usGrid');
+  const foreignGrid = document.getElementById('foreignGrid');
+  
+  usGrid.innerHTML = '';
+  foreignGrid.innerHTML = '';
+  
+  usCompanies.forEach(company => {
+    usGrid.appendChild(createCompanyCard(company, false));
+  });
+  
+  foreignCompanies.forEach(company => {
+    foreignGrid.appendChild(createCompanyCard(company, true));
+  });
+}
+
+function createCompanyCard(company, isForeign = false) {
+  const card = document.createElement('div');
+  card.className = `company-card${isForeign ? ' foreign-card' : ''}`;
+  card.dataset.ticker = company.ticker;
+  card.dataset.name = company.name.toLowerCase();
+  card.dataset.risk = company.risk;
+
+  const riskClass = company.risk === 'Low' ? 'risk-low' : 
+                    company.risk === 'Medium' ? 'risk-medium' : 'risk-high';
+
+  card.innerHTML = `
+    <span class="risk-badge ${riskClass}">${company.risk}</span>
+    
+    <div class="ticker">${company.ticker}${isForeign ? `<span class="exchange-badge">${company.exchange}</span>` : ''}</div>
+    <div class="company-name">${company.name}</div>
+    
+    <div class="revision-story">
+      <div class="story-label">The reVISION Story</div>
+      <div class="story-transformation">
+        <span class="discarded">${company.discarded}</span>
+        <span class="arrow">→</span>
+        <span class="revisioned">${company.revisioned}</span>
+      </div>
+    </div>
+    
+    <div class="price-section">
+      <div class="current-price" data-ticker="${company.ticker}">
+        ${isForeign ? '<span style="color: var(--text-light); font-size: 0.85rem;">—</span>' : '<span class="price-loading">...</span>'}
+      </div>
+      <div class="price-change" data-ticker="${company.ticker}-change"></div>
+    </div>
+    
+    <div class="catalyst">${company.catalyst}</div>
+    
+    <div class="expanded-content">
+      <div class="news-section">
+        <div class="detail-section-title">Research Links</div>
+        <div class="news-container" data-ticker="${company.ticker}-news">
+          <div class="news-item">
+            <a href="https://news.google.com/search?q=${encodeURIComponent(company.name + ' stock')}" target="_blank">Google News →</a>
+            <div class="news-source">Search recent coverage</div>
+          </div>
+          <div class="news-item">
+            <a href="https://finance.yahoo.com/quote/${company.ticker}" target="_blank">Yahoo Finance →</a>
+            <div class="news-source">Charts, financials, analysis</div>
+          </div>
+          <div class="news-item">
+            <a href="https://seekingalpha.com/symbol/${company.ticker}" target="_blank">Seeking Alpha →</a>
+            <div class="news-source">In-depth research</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  card.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') return;
+    
+    if (expandedCard && expandedCard !== card) {
+      expandedCard.classList.remove('expanded');
+    }
+    
+    card.classList.toggle('expanded');
+    expandedCard = card.classList.contains('expanded') ? card : null;
+    
+    // Fetch live news when expanded (US companies only)
+    if (card.classList.contains('expanded') && !isForeign && FINNHUB_API_KEY !== 'YOUR_API_KEY_HERE') {
+      const newsContainer = card.querySelector(`[data-ticker="${company.ticker}-news"]`);
+      if (newsContainer && !newsContainer.dataset.loaded) {
+        fetchNews(company.ticker, company.name, newsContainer);
+        newsContainer.dataset.loaded = 'true';
+      }
+    }
+  });
+
+  return card;
+}
+
+// ============================================
+// FILTERING
+// ============================================
+function filterCompanies() {
+  const riskFilter = document.getElementById('riskFilter').value;
+  const searchFilter = document.getElementById('searchFilter').value.toLowerCase();
+  const sortFilter = document.getElementById('sortFilter').value;
+  
+  const allCards = document.querySelectorAll('.company-card');
+  
+  allCards.forEach(card => {
+    const matchesRisk = riskFilter === 'all' || card.dataset.risk === riskFilter;
+    const matchesSearch = searchFilter === '' || 
+      card.dataset.ticker.toLowerCase().includes(searchFilter) ||
+      card.dataset.name.includes(searchFilter);
+    
+    card.style.display = (matchesRisk && matchesSearch) ? 'block' : 'none';
+  });
+}
+
+// ============================================
+// STATS
+// ============================================
+function updateStats() {
+  const total = usCompanies.length + foreignCompanies.length;
+  document.getElementById('totalCompanies').textContent = total;
+  document.getElementById('usCompanies').textContent = usCompanies.length;
+  
+  const lowRiskCount = [...usCompanies, ...foreignCompanies].filter(c => c.risk === 'Low').length;
+  document.getElementById('lowRiskCount').textContent = lowRiskCount;
+}
+
+// ============================================
+// PRICE FETCHING
+// ============================================
+async function fetchAllPrices() {
+  if (FINNHUB_API_KEY === 'YOUR_API_KEY_HERE') return;
+  
+  const changes = [];
+  
+  for (const company of usCompanies) {
+    try {
+      const data = await fetchPrice(company.ticker);
+      if (data) {
+        changes.push(data.change);
+      }
+      await new Promise(resolve => setTimeout(resolve, 220));
+    } catch (error) {
+      console.error('Error fetching', company.ticker);
+    }
+  }
+  
+  // Update avg change
+  if (changes.length > 0) {
+    const avgChange = changes.reduce((a, b) => a + b, 0) / changes.length;
+    const avgEl = document.getElementById('avgChange');
+    avgEl.textContent = `${avgChange >= 0 ? '+' : ''}${avgChange.toFixed(2)}%`;
+    avgEl.style.color = avgChange >= 0 ? 'var(--risk-low)' : 'var(--risk-high)';
+  }
+  
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+}
+
+async function fetchPrice(ticker) {
+  try {
+    const response = await fetch(
+      `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${FINNHUB_API_KEY}`
+    );
+    
+    if (!response.ok) return null;
+    
+    const data = await response.json();
+    
+    if (data && data.c && data.c > 0) {
+      const price = data.c;
+      const changePercent = data.dp || 0;
+      
+      // Update price display
+      const priceElements = document.querySelectorAll(`.current-price[data-ticker="${ticker}"]`);
+      priceElements.forEach(el => {
+        el.innerHTML = `$${price.toFixed(2)}`;
+        el.classList.remove('price-loading');
+      });
+      
+      // Update change display
+      const changeElements = document.querySelectorAll(`.price-change[data-ticker="${ticker}-change"]`);
+      changeElements.forEach(el => {
+        const isPositive = changePercent >= 0;
+        el.className = `price-change ${isPositive ? 'price-up' : 'price-down'}`;
+        el.innerHTML = `${isPositive ? '▲' : '▼'} ${Math.abs(changePercent).toFixed(2)}%`;
+      });
+      
+      return { price, change: changePercent };
+    }
+  } catch (error) {
+    // Silent fail
+  }
+  return null;
+}
+
+// ============================================
+// NEWS FETCHING
+// ============================================
+async function fetchNews(ticker, companyName, newsContainer) {
+  if (FINNHUB_API_KEY === 'YOUR_API_KEY_HERE') return;
+  
+  try {
+    const today = new Date();
+    const weekAgo = new Date(today);
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    const fromDate = weekAgo.toISOString().split('T')[0];
+    const toDate = today.toISOString().split('T')[0];
+    
+    const response = await fetch(
+      `https://finnhub.io/api/v1/company-news?symbol=${ticker}&from=${fromDate}&to=${toDate}&token=${FINNHUB_API_KEY}`
+    );
+    
+    if (!response.ok) return;
+    
+    const articles = await response.json();
+    
+    if (articles && articles.length > 0) {
+      const topArticles = articles.slice(0, 4);
+      newsContainer.innerHTML = topArticles.map(article => {
+        const date = new Date(article.datetime * 1000);
+        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        return `
+          <div class="news-item">
+            <a href="${article.url}" target="_blank">${article.headline}</a>
+            <div class="news-source">${article.source} · ${dateStr}</div>
+          </div>
+        `;
+      }).join('');
+    }
+  } catch (error) {
+    // Keep fallback links
+  }
+}
+
+// ============================================
+// RUN
+// ============================================
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initialize);
+} else {
+  initialize();
+}
+</script>
+</body>
+</html>
