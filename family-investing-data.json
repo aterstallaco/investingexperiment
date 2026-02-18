@@ -1,0 +1,155 @@
+{
+  "people": [
+    {
+      "id": "p1771448778218n2f5",
+      "name": "Lulu",
+      "stocks": [
+        {
+          "id": "s1771448820142gwc9",
+          "symbol": "OFRM",
+          "shares": 1,
+          "buyPrice": 24.9,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771448852384n3ow",
+          "symbol": "AEO",
+          "shares": 1,
+          "buyPrice": 25.08,
+          "buyDate": "0026-02-18"
+        },
+        {
+          "id": "s1771448909001emoa",
+          "symbol": "WEN",
+          "shares": 1,
+          "buyPrice": 8.03,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771448983823dxaf",
+          "symbol": "KHC",
+          "shares": 1,
+          "buyPrice": 23.97,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s17714490741582alj",
+          "symbol": "UTZ",
+          "shares": 2,
+          "buyPrice": 9.11,
+          "buyDate": "2026-02-18"
+        }
+      ]
+    },
+    {
+      "id": "p17714491099240iaq",
+      "name": "Gigi",
+      "stocks": [
+        {
+          "id": "s17714491286497ckg",
+          "symbol": "GEVO",
+          "shares": 9,
+          "buyPrice": 1.91,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s17714491656591a50",
+          "symbol": "KSS",
+          "shares": 1,
+          "buyPrice": 19.68,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771449179727rpjk",
+          "symbol": "SERV",
+          "shares": 2,
+          "buyPrice": 9.64,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771449233275crwj",
+          "symbol": "TREX",
+          "shares": 1,
+          "buyPrice": 42.75,
+          "buyDate": "2026-02-18"
+        }
+      ]
+    },
+    {
+      "id": "p1771449241380htae",
+      "name": "reVISIONeer",
+      "stocks": [
+        {
+          "id": "s1771449264605k125",
+          "symbol": "WULF",
+          "shares": 1,
+          "buyPrice": 15.38,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s17714492892259yvl",
+          "symbol": "DEC",
+          "shares": 1,
+          "buyPrice": 13.4,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s17714493174292riy",
+          "symbol": "EOSE",
+          "shares": 1,
+          "buyPrice": 11.61,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771449343776rwgx",
+          "symbol": "EOSE",
+          "shares": 2,
+          "buyPrice": 11.59,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771449374323idan",
+          "symbol": "PCT",
+          "shares": 1,
+          "buyPrice": 8.81,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771449414839i8ix",
+          "symbol": "SERV",
+          "shares": 1,
+          "buyPrice": 9.28,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771449440350g6sc",
+          "symbol": "MNTK",
+          "shares": 11,
+          "buyPrice": 1.67,
+          "buyDate": "2026-08-18"
+        }
+      ]
+    },
+    {
+      "id": "p17714494569023b4w",
+      "name": "Crafting Creator ML",
+      "stocks": [
+        {
+          "id": "s1771449543679qvv7",
+          "symbol": "PFE",
+          "shares": 2,
+          "buyPrice": 27.37,
+          "buyDate": "2026-02-18"
+        },
+        {
+          "id": "s1771449597234cao6",
+          "symbol": "OWNS",
+          "shares": 2.5252,
+          "buyPrice": 17.75,
+          "buyDate": "2026-02-18"
+        }
+      ]
+    }
+  ],
+  "updated": "2026-02-18T21:16:42.401Z"
+}
